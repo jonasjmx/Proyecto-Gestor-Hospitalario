@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-//HOLA PEPE
+//HOLA PEPE y JUanito
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

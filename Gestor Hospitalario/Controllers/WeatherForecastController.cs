@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gestor_Hospitalario.Controllers
 {
+
+    // Este es el comentario de prueba 
+
+
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
