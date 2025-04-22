@@ -5,9 +5,9 @@ namespace Gestor_Hospitalario.Models
     public class CentroMedico
     {
         [Key]
-        public required int CentroID { get; set; }
+        public int CentroID { get; set; }
         public required string Nombre { get; set; }
-        public string Direccion { get; set; }
+        public required string Direccion { get; set; }
         public required string Telefono { get; set; }
         public required string Email { get; set; }
 
@@ -16,3 +16,4 @@ namespace Gestor_Hospitalario.Models
         public ICollection<ConsultaMedica>? ConsultasMedicas { get; set; }
     }
 }
+
