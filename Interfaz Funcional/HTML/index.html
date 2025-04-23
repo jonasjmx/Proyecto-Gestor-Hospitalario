@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Hospitalaria</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            
+            <h1>Sistema de Gestión Hospitalaria</h1>
+        </div>
+        <nav class="main-menu">
+            <ul>
+                <li><a href="#" id="menu-centros" class="active">Centros Médicos</a></li>
+                <li><a href="#" id="menu-consultas">Consultas Médicas</a></li>
+                <li><a href="#" id="menu-empleados">Empleados</a></li>
+                <li><a href="#" id="menu-especialidades">Especialidades</a></li>
+                <li><a href="#" id="menu-medicos">Médicos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="section-header">
+                <h2 id="section-title">Centros Médicos</h2>
+                <button id="btn-agregar" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Nuevo</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Buscar...">
+                <button id="btn-search"><i class="fas fa-search"></i></button>
+            </div>
+
+            <!-- Contenedor para las secciones -->
+            <div id="section-container">
+                <!-- Sección de Centros Médicos (visible por defecto) -->
+                <section id="centros-medicos" class="section-content active">
+                    <table id="tabla-centros" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Dirección</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Sección de Consultas Médicas -->
+                <section id="consultas-medicas" class="section-content">
+                    <table id="tabla-consultas" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Paciente</th>
+                                <th>Médico</th>
+                                <th>Centro</th>
+                                <th>Ubicación</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Sección de Empleados -->
+                <section id="empleados" class="section-content">
+                    <table id="tabla-empleados" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cargo</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Centro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Sección de Especialidades -->
+                <section id="especialidades" class="section-content">
+                    <table id="tabla-especialidades" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Sección de Médicos -->
+                <section id="medicos" class="section-content">
+                    <table id="tabla-medicos" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Especialidad</th>
+                                <th>Centro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para formularios -->
+    <div id="modal-form" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title">Agregar Centro Médico</h3>
+            <form id="form-general">
+                <!-- Los campos se generarán dinámicamente según la sección activa -->
+                <div id="modal-form-fields"></div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-danger" id="btn-cancelar">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Sistema de Gestión Hospitalaria</p>
+    </footer>
+
+    <script src="../JAVASCRIPT/main.js"></script>
+    <script src="../JAVASCRIPT/centrosMedicos.js"></script>
+    <script src="../JAVASCRIPT/empleados.js"></script>
+    <script src="../JAVASCRIPT/Especialidades.js"></script>
+    <script src="../JAVASCRIPT/medicos.js"></script>
+    <script src="../JAVASCRIPT/ConsultasMedicas.js"></script>
+
+
+    
+</body>
+</html>
