@@ -145,22 +145,99 @@ public class CentroMedicoCreateDTO {
 
 ---
 
-## 🚀 Guía Rápida de Despliegue
-### Requisitos
-- .NET Core SDK
-- MySQL Server
-- Máquinas virtuales Ubuntu (para configuración distribuida)
-- Visual Studio o VS Code
+## 🚀 Guía Rápida de Configuración
+- Configuración VMs:
+```bash
+# En todas las instancias:
+sudo apt update && sudo apt install mysql-server -y
+sudo mysql_secure_installation
+```
+- Replicación MySQL:
+```sql
+-- En MASTER:
+CREATE USER 'replicator'@'%' IDENTIFIED BY 'password';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'%';
 
-### Pasos
-1. Clonar el repositorio.
-2. Configurar cadenas de conexión en `appsettings.json`.
-3. Ejecutar migraciones de Entity Framework:
-     ```bash
-     dotnet ef database update
-     ```
+-- En SLAVES:
+CHANGE MASTER TO
+  MASTER_HOST='192.168.1.30',
+  MASTER_USER='replicator',
+  MASTER_PASSWORD='password',
+  MASTER_LOG_FILE='mysql-bin.000004',
+  MASTER_LOG_POS=4349;
+START SLAVE;
+```
 
+```sql
+# Ver estado replicación
+SHOW SLAVE STATUS\G
+# Ver procesos MySQL
+SHOW PROCESSLIST;
+```
+
+## 🗃️ Base de Datos
+Proveedor: MySQL
+- Host: Máquinas Virtuales Ubuntu (Infraestructura distribuida)
+- Configuración:
+
+- Cadena de conexión en appsettings.json
+
+- Configuración de replicación maestro-esclavo entre centros médicos
+```bash
+"ConnectionStrings": {
+  "MySqlConnection": "server=192.168.1.30;port=3306;database=GestionHospitalaria;user=ubuntu;password=Ubuntu@123;"
+}
+```
+
+Tablas principales:
+- CentrosMedicos
+- Especialidades
+- Medicos
+- Empleados
+- ConsultasMedicas
 ---
+## ⚙️ Endpoints REST
+Centros Médicos
+- GET /api/CentrosMedicos/Listar → Listar todos
+- GET /api/CentrosMedicos/Buscar/{id} → Buscar por ID
+- POST /api/CentrosMedicos/Crear → Crear nuevo
+- PUT /api/CentrosMedicos/Actualizar/{id} → Actualizar
+- DELETE /api/CentrosMedicos/Eliminar/{id} → Eliminar
+---
+Médicos
+- GET /api/Medico/Listar → Listar todos
+- POST /api/Medico/Crear → Crear nuevo
+- PUT /api/Medico/Actualizar/{id} → Actualizar
+- DELETE /api/Medico/Eliminar/{id} → Eliminar
+---
+Consultas Médicas
+- GET /api/ConsultaMedica/Listar → Listar todas
+- POST /api/ConsultaMedica/Crear → Crear nueva
+- PUT /api/ConsultaMedica/Actualizar/{id} → Actualizar
+- DELETE /api/ConsultaMedica/Eliminar/{id} → Eliminar
+---
+## 🖥️ Interfaz Web
+- Tecnologías: HTML, CSS, JavaScript
+- Estructura:
+```bash
+Interfaz_Funcional/
+├── CSS/
+├── HTML/
+└── JAVASCRIPT/
+```
+
+Secciones:
+- Centros Médicos
+- Médicos
+- Consultas Médicas
+- Empleados
+- Especialidades
+---
+Características:
+- Diseño responsive con menú de navegación
+- Modales para formularios de CRUD
+- Validaciones de campos
+- Búsqueda en tiempo real
 
 ## 🚧 Estado del Proyecto
 - ✅ Sistema completamente funcional.
