@@ -22,6 +22,32 @@ namespace Gestor_Hospitalario.Controllers
             _context = context;
         }
 
+
+        /// <summary>
+        /// Listar todos los empleados
+        /// </summary>
+        [HttpGet("Listar")]
+        public async Task<ActionResult<IEnumerable<EmpleadoReadDTO>>> ListarEmpleados()
+        {
+            var empleados = await _context.Empleados
+                                          .Include(e => e.CentroMedico)
+                                          .ToListAsync();
+
+            var lista = empleados.Select(e => new EmpleadoReadDTO
+            {
+                EmpleadoID = e.EmpleadoID,
+                Nombre = e.Nombre,
+                Apellido = e.Apellido,
+                Cargo = e.Cargo,
+                Telefono = e.Telefono,
+                Email = e.Email,
+                CentroMedicoNombre = e.CentroMedico?.Nombre ?? string.Empty
+            }).ToList();
+
+            return Ok(lista);
+        }
+
+
         /// <summary>
         /// Crear un nuevo empleado
         /// </summary>
