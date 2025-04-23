@@ -21,6 +21,21 @@ namespace Gestor_Hospitalario.Controllers
         {
             _context = context;
         }
+        /// <summary>
+        /// Listar todas las consultas médicas
+        /// </summary>
+        [HttpGet("Listar")]
+        public async Task<ActionResult<IEnumerable<ConsultaMedicaReadDTO>>> ListarConsultasMedicas()
+        {
+            var consultas = await _context.ConsultasMedicas
+                                          .Include(c => c.Medico)
+                                          .Include(c => c.CentroMedico)
+                                          .ToListAsync();
+
+            var resultado = consultas.Select(ConsultaMedicaReadDTO.FromModel).ToList();
+
+            return Ok(resultado);
+        }
 
         /// <summary>
         /// Crear una nueva consulta médica
@@ -67,22 +82,10 @@ namespace Gestor_Hospitalario.Controllers
             await _context.Entry(nuevaConsulta).Reference(c => c.Medico).LoadAsync();
             await _context.Entry(nuevaConsulta).Reference(c => c.CentroMedico).LoadAsync();
 
-            var result = new ConsultaMedicaReadDTO
-            {
-                ConsultaID = nuevaConsulta.ConsultaID,
-                Fecha = nuevaConsulta.Fecha,
-                Hora = nuevaConsulta.Hora,
-                PacienteNombre = nuevaConsulta.PacienteNombre,
-                PacienteApellido = nuevaConsulta.PacienteApellido,
-                Ubicacion = nuevaConsulta.Ubicacion,
-                MedicoNombre = nuevaConsulta.Medico?.Nombre ?? "",
-                CentroMedicoNombre = nuevaConsulta.CentroMedico?.Nombre ?? ""
-            };
+            var result = ConsultaMedicaReadDTO.FromModel(nuevaConsulta);
 
             return CreatedAtAction(nameof(GetConsultaMedica), new { id = result.ConsultaID }, result);
         }
-
-
 
         /// <summary>
         /// Obtener consulta médica por Id
@@ -98,17 +101,7 @@ namespace Gestor_Hospitalario.Controllers
             if (consulta == null)
                 return NotFound();
 
-            var result = new ConsultaMedicaReadDTO
-            {
-                ConsultaID = consulta.ConsultaID,
-                Fecha = consulta.Fecha,
-                Hora = consulta.Hora,
-                PacienteNombre = consulta.PacienteNombre,
-                PacienteApellido = consulta.PacienteApellido,
-                Ubicacion = consulta.Ubicacion,
-                MedicoNombre = consulta.Medico.Nombre,
-                CentroMedicoNombre = consulta.CentroMedico.Nombre
-            };
+            var result = ConsultaMedicaReadDTO.FromModel(consulta);
 
             return Ok(result);
         }
