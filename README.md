@@ -1,6 +1,6 @@
 # Proyecto Gestor Hospitalario
 
-## 📚 SGA - Sistema de Centros Medicos
+## 📚 SGM - Sistema de Centros Medicos
 Este proyecto es un sistema de gestión académica completo, compuesto por una API RESTful desarrollada en ASP.NET Core, conectada a una base de datos MySQL en maquinas virtuales con Ubuntu server 24, con una interfaz web básica (HTML + JS) para gestionar en los centro Medicos los Empleados, Medicos, consultas medicas y especialidades.
 
 ## 🏥 Sistema de Gestión Hospitalaria Distribuido
