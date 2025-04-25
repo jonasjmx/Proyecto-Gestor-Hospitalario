@@ -259,16 +259,6 @@ Características:
 - Implementar autenticación JWT.
 - Migrar frontend a Vue.js/React.
 - Añadir módulo de historias clínicas.
-<<<<<<< HEAD
 - Implementar balanceo de carga entre centros.
-=======
 - Implementar balanceo de carga entre centros.
-
-
-
-
-
-
-
-
->>>>>>> 7c2b6ba3e870ce4484c783f03fd03c69f952e9f1
+- Implementar balanceo de carga entre centros medicos.
