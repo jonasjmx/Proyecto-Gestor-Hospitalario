@@ -16,6 +16,7 @@ function loadEmpleados() {
             
             if (!Array.isArray(data)) {
                 throw new Error('La API no devolvió un array de empleados');
+                
             }
             
             empleados = data;
