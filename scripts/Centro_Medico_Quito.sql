@@ -105,10 +105,25 @@ USE GestionHospitalaria;
 -- Almacena información sobre los centros médicos.
 CREATE TABLE CentrosMedicos (
     CentroID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Direccion VARCHAR(50) NOT NULL,
+    Telefono VARCHAR(10),
+    Email VARCHAR(100) UNIQUE
+);
+
+-- Crear tabla Usuarios
+-- Almacena información sobre los usuarios del sistema, incluyendo su rol y credenciales.
+CREATE TABLE Usuarios (
+    UsuarioID INT AUTO_INCREMENT PRIMARY KEY,
     Nombre VARCHAR(100) NOT NULL,
-    Direccion VARCHAR(255) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Sexo ENUM('MASCULINO', 'FEMENINO') NOT NULL,
+    FechaNacimiento DATE NOT NULL,
+    Direccion VARCHAR(100) NOT NULL,
     Telefono VARCHAR(15),
-    Email VARCHAR(100)
+    Email VARCHAR(100) UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Rol ENUM('ADMIN', 'MEDICO', 'EMPLEADO') NOT NULL
 );
 
 -- Crear tabla Especialidades
@@ -122,79 +137,101 @@ CREATE TABLE Especialidades (
 -- Almacena información sobre los médicos, incluyendo su especialidad y centro médico asociado.
 CREATE TABLE Medicos (
     MedicoID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL,
-    Apellido VARCHAR(100) NOT NULL,
-    Telefono VARCHAR(15),
-    Email VARCHAR(100),
     EspecialidadID INT NOT NULL,
     CentroID INT NOT NULL,
+    UsuarioID INT NOT NULL,
     FOREIGN KEY (EspecialidadID) REFERENCES Especialidades(EspecialidadID),
-    FOREIGN KEY (CentroID) REFERENCES CentrosMedicos(CentroID)
+    FOREIGN KEY (CentroID) REFERENCES CentrosMedicos(CentroID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID)
 );
 
 -- Crear tabla Empleados
 -- Almacena información sobre los empleados de los centros médicos.
 CREATE TABLE Empleados (
     EmpleadoID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL,
-    Apellido VARCHAR(100) NOT NULL,
-    Cargo VARCHAR(100),
-    Telefono VARCHAR(15),
-    Email VARCHAR(100),
+    Cargo VARCHAR(50) NOT NULL,
+    UsuarioID INT NOT NULL,
     CentroID INT NOT NULL,
     FOREIGN KEY (CentroID) REFERENCES CentrosMedicos(CentroID)
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID)
 );
 
--- Crear tabla ConsultasMedicas
--- Almacena información sobre las consultas médicas realizadas.
-CREATE TABLE ConsultasMedicas (
-    ConsultaID INT AUTO_INCREMENT PRIMARY KEY,
-    Fecha DATE NOT NULL,
-    Hora TIME NOT NULL,
-    PacienteNombre VARCHAR(100) NOT NULL,
-    PacienteApellido VARCHAR(100) NOT NULL,
-    Ubicacion ENUM('QUITO', 'GUAYAQUIL', 'CUENCA') NOT NULL,
-    MedicoID INT NOT NULL,
+-- Crear tabla Pacientes
+-- Almacena información sobre los pacientes atendidos en los centros médicos.
+CREATE TABLE Pacientes (
+    PacienteID INT AUTO_INCREMENT PRIMARY KEY,
+    UsuarioID INT NOT NULL,
     CentroID INT NOT NULL,
+    FechaRegistro DATE NOT NULL,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(UsuarioID)
+);
+
+-- Crear tabla Consultas
+-- Almacena información sobre las consultas médicas realizadas, incluyendo el médico y el paciente.
+CREATE TABLE Consultas (
+    ConsultaID INT AUTO_INCREMENT PRIMARY KEY,
+    MedicoID INT NOT NULL,
+    PacienteID INT NOT NULL,
+    FechaConsulta DATE NOT NULL,
+    Diagnostico TEXT,
+    Receta TEXT,
     FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID),
-    FOREIGN KEY (CentroID) REFERENCES CentrosMedicos(CentroID)
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(PacienteID)
 );
 
 -- ##################################################################################################
 -- INSERTAR DATOS DE PRUEBA
 -- ##################################################################################################
 
--- Insertar datos en CentrosMedicos
--- Datos de prueba para los centros médicos.
+-- Insertar datos en la tabla CentrosMedicos
 INSERT INTO CentrosMedicos (Nombre, Direccion, Telefono, Email)
 VALUES 
-('Hospital Central', 'Av. Principal 123, Ciudad', '123456789', 'contacto@hospitalcentral.com'),
-('Clínica San José', 'Calle Secundaria 45, Ciudad', '987654321', 'info@clinicasanjose.com'),
-('Centro Médico Norte', 'Av. Norte 67, Ciudad', '456789123', 'contacto@centromediconorte.com');
+('Centro Médico Quito', 'Av. Amazonas 123', '022345678', 'quito@centromedico.com'),
+('Centro Médico Guayaquil', 'Malecón 2000', '042345678', 'guayaquil@centromedico.com'),
+('Centro Médico Cuenca', 'Av. Solano 456', '072345678', 'cuenca@centromedico.com'),
+('Centro Médico Latacunga', 'Calle Sucre 789', '032345678', 'latacunga@centromedico.com');
 
--- Insertar datos en Especialidades
--- Datos de prueba para las especialidades médicas.
+-- Insertar datos en la tabla Usuarios
+INSERT INTO Usuarios (Nombre, Apellido, Sexo, FechaNacimiento, Direccion, Telefono, Email, Password, Rol)
+VALUES 
+('Juan', 'Perez', 'MASCULINO', '1985-05-15', 'Calle 1', '0991234567', 'juan.perez@example.com', 'password123', 'ADMIN'),
+('Maria', 'Gomez', 'FEMENINO', '1990-08-20', 'Calle 2', '0997654321', 'maria.gomez@example.com', 'password456', 'MEDICO'),
+('Carlos', 'Lopez', 'MASCULINO', '1980-03-10', 'Calle 3', '0991122334', 'carlos.lopez@example.com', 'password789', 'EMPLEADO');
+
+-- Insertar datos en la tabla Especialidades
 INSERT INTO Especialidades (Nombre)
 VALUES 
 ('Cardiología'),
 ('Pediatría'),
 ('Dermatología');
 
--- Insertar datos en Medicos
--- Datos de prueba para los médicos.
-INSERT INTO Medicos (Nombre, Apellido, Telefono, Email, EspecialidadID, CentroID)
+-- Insertar datos en la tabla Medicos
+INSERT INTO Medicos (EspecialidadID, CentroID, UsuarioID)
 VALUES 
-('Juan', 'Pérez', '111222333', 'juan.perez@hospital.com', 1, 1),
-('María', 'Gómez', '444555666', 'maria.gomez@hospital.com', 2, 2),
-('Carlos', 'López', '777888999', 'carlos.lopez@hospital.com', 3, 3);
+(1, 1, 2),
+(2, 2, 2),
+(3, 3, 2);
 
--- Insertar datos en Empleados
--- Datos de prueba para los empleados.
-INSERT INTO Empleados (Nombre, Apellido, Cargo, Telefono, Email, CentroID)
+-- Insertar datos en la tabla Empleados
+INSERT INTO Empleados (Cargo, UsuarioID, CentroID)
 VALUES 
-('Ana', 'Martínez', 'Recepcionista', '123123123', 'ana.martinez@hospital.com', 1),
-('Luis', 'Hernández', 'Administrador', '321321321', 'luis.hernandez@hospital.com', 2),
-('Sofía', 'Ramírez', 'Enfermera', '456456456', 'sofia.ramirez@hospital.com', 3);
+('Recepcionista', 3, 1),
+('Enfermero', 3, 2),
+('Administrador', 3, 3);
+
+-- Insertar datos en la tabla Pacientes
+INSERT INTO Pacientes (UsuarioID, CentroID, FechaRegistro)
+VALUES 
+(1, 1, '2023-01-01'),
+(2, 2, '2023-02-01'),
+(3, 3, '2023-03-01');
+
+-- Insertar datos en la tabla Consultas
+INSERT INTO Consultas (MedicoID, PacienteID, FechaConsulta, Diagnostico, Receta)
+VALUES 
+(1, 1, '2023-01-15', 'Chequeo general', 'Paracetamol 500mg'),
+(2, 2, '2023-02-15', 'Consulta pediátrica', 'Ibuprofeno 200mg'),
+(3, 3, '2023-03-15', 'Consulta dermatológica', 'Crema hidratante');
 
 -- ##################################################################################################
 -- VERIFICACIONES FINALES

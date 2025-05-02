@@ -87,10 +87,10 @@ USE GestionHospitalaria;
 
 -- Crear una vista para filtrar las consultas médicas realizadas en Cuenca.
 -- Esto permite realizar consultas específicas sobre los datos replicados.
-CREATE VIEW ConsultasCUENCA AS
+CREATE VIEW ConsultasLATACUNGA AS
 SELECT * 
 FROM GestionHospitalaria.Consultas 
-WHERE Ubicacion = 'CUENCA';
+WHERE Ubicacion = 'LATACUNGA';
 
 -- ##################################################################################################
 -- FIN DEL SCRIPT

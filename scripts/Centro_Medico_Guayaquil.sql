@@ -87,9 +87,9 @@ USE GestionHospitalaria;
 
 -- Crear una vista para filtrar las consultas médicas realizadas en Guayaquil.
 -- Esto permite realizar consultas específicas sobre los datos replicados.
-CREATE VIEW ConsultasGuayaquil AS
+CREATE VIEW ConsultasGUAYAQUIL AS
 SELECT * 
-FROM GestionHospitalaria.ConsultasMedicas 
+FROM GestionHospitalaria.Consultas 
 WHERE Ubicacion = 'GUAYAQUIL';
 
 -- ##################################################################################################
