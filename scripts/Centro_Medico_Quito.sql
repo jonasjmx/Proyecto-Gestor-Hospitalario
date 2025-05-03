@@ -172,12 +172,14 @@ CREATE TABLE Consulta (
     ConsultaID INT AUTO_INCREMENT PRIMARY KEY,
     MedicoID INT NOT NULL,
     PacienteID INT NOT NULL,
-    FechaConsulta DATE NOT NULL,
+    FechaConsulta DATE NOT NULL,   -- Mantienes la columna de fecha
+    HoraConsulta TIME NOT NULL,    -- Nueva columna para la hora
     Diagnostico TEXT,
     Receta TEXT,
-    FOREIGN KEY (MedicoID) REFERENCES Medico(MedicoID),
-    FOREIGN KEY (PacienteID) REFERENCES Paciente(PacienteID)
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID),
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(PacienteID)
 );
+
 
 -- ##################################################################################################
 -- INSERTAR DATOS DE PRUEBA
