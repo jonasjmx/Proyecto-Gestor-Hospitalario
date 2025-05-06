@@ -13,121 +13,103 @@ namespace Gestor_Hospitalario.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EspecialidadesController : ControllerBase
+    public class EspecialidadController : ControllerBase
     {
         private readonly HospitalContext _context;
 
-        public EspecialidadesController(HospitalContext context)
+        public EspecialidadController(HospitalContext context)
         {
             _context = context;
         }
 
-        /// <summary>
-        /// Lista todas las especialidades registradas
-        /// </summary>
-        [HttpGet("Listar")]
-        public async Task<ActionResult<IEnumerable<EspecialidadReadDTO>>> GetEspecialidades()
-        {
-            var especialidades = await _context.Especialidades.ToListAsync();
-            var result = especialidades.Select(e => new EspecialidadReadDTO
-            {
-                EspecialidadID = e.EspecialidadID,
-                Nombre = e.Nombre
-            }).ToList();
-
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Obtener especialidad por Id
-        /// </summary>
-        [HttpGet("Buscar/{id}")]
-        public async Task<ActionResult<EspecialidadReadDTO>> GetEspecialidad(int id)
-        {
-            var especialidad = await _context.Especialidades.FindAsync(id);
-            if (especialidad == null)
-                return NotFound();
-
-            return new EspecialidadReadDTO
-            {
-                EspecialidadID = especialidad.EspecialidadID,
-                Nombre = especialidad.Nombre
-            };
-        }
-
-        /// <summary>
-        /// Crear una nueva especialidad
-        /// </summary>
+        // Crear
         [HttpPost("Crear")]
         public async Task<ActionResult<EspecialidadReadDTO>> CrearEspecialidad([FromBody] EspecialidadCreateDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Validar si ya existe una especialidad con el mismo nombre (ignorando mayúsculas)
-            bool yaExiste = await _context.Especialidades
-                .AnyAsync(e => e.Nombre.ToLower() == dto.Nombre.ToLower());
-
-            if (yaExiste)
+            var existe = await _context.Especialidades.AnyAsync(e => e.Nombre == dto.Nombre);
+            if (existe)
                 return Conflict($"Ya existe una especialidad con el nombre '{dto.Nombre}'.");
 
-            var nueva = new Especialidad
-            {
-                Nombre = dto.Nombre
-            };
-
+            var nueva = new Especialidad { Nombre = dto.Nombre };
             _context.Especialidades.Add(nueva);
             await _context.SaveChangesAsync();
 
             var result = new EspecialidadReadDTO
             {
                 EspecialidadID = nueva.EspecialidadID,
-                Nombre = nueva.Nombre,
+                Nombre = nueva.Nombre
             };
 
-            return CreatedAtAction(nameof(GetEspecialidad), new { id = result.EspecialidadID }, result);
+            return CreatedAtAction(nameof(ObtenerEspecialidad), new { id = result.EspecialidadID }, result);
         }
 
+        // Obtener una por ID
+        [HttpGet("Buscar/{id}")]
+        public async Task<ActionResult<EspecialidadReadDTO>> ObtenerEspecialidad(int id)
+        {
+            var esp = await _context.Especialidades.FindAsync(id);
+            if (esp == null)
+                return NotFound();
 
-        /// <summary>
-        /// Actualizar datos de una especialidad
-        /// </summary>
+            return Ok(new EspecialidadReadDTO
+            {
+                EspecialidadID = esp.EspecialidadID,
+                Nombre = esp.Nombre
+            });
+        }
+
+        // Listar todas
+        [HttpGet("Listar")]
+        public async Task<ActionResult<IEnumerable<EspecialidadReadDTO>>> ListarEspecialidades()
+        {
+            var lista = await _context.Especialidades
+                                      .Select(e => new EspecialidadReadDTO
+                                      {
+                                          EspecialidadID = e.EspecialidadID,
+                                          Nombre = e.Nombre
+                                      })
+                                      .ToListAsync();
+
+            return Ok(lista);
+        }
+
+        // Actualizar
         [HttpPut("Actualizar/{id}")]
         public async Task<IActionResult> ActualizarEspecialidad(int id, [FromBody] EspecialidadUpdateDTO dto)
         {
-            var especialidad = await _context.Especialidades.FindAsync(id);
-            if (especialidad == null)
+            var esp = await _context.Especialidades.FindAsync(id);
+            if (esp == null)
                 return NotFound();
 
-            // Verificar si ya existe otra especialidad con el mismo nombre (ignorando mayúsculas)
-            bool nombreDuplicado = await _context.Especialidades
-                .AnyAsync(e => e.Nombre.ToLower() == dto.Nombre.ToLower() && e.EspecialidadID != id);
+            // Verificar duplicado
+            var existe = await _context.Especialidades
+                                       .AnyAsync(e => e.Nombre == dto.Nombre && e.EspecialidadID != id);
 
-            if (nombreDuplicado)
+            if (existe)
                 return Conflict($"Ya existe otra especialidad con el nombre '{dto.Nombre}'.");
 
-            especialidad.Nombre = dto.Nombre;
-
+            esp.Nombre = dto.Nombre;
             await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
-
-        /// <summary>
-        /// Eliminar una especialidad por ID
-        /// </summary>
+        // Eliminar
         [HttpDelete("Eliminar/{id}")]
         public async Task<IActionResult> EliminarEspecialidad(int id)
         {
-            var especialidad = await _context.Especialidades.FindAsync(id);
-            if (especialidad == null)
-                return NotFound($"No se encontró ninguna especialidad con ID {id}.");
+            var esp = await _context.Especialidades.FindAsync(id);
+            if (esp == null)
+                return NotFound();
 
-            _context.Especialidades.Remove(especialidad);
+            _context.Especialidades.Remove(esp);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
     }
+
 }

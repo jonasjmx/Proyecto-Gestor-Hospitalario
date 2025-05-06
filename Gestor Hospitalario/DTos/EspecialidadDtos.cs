@@ -1,5 +1,6 @@
 ﻿namespace Gestor_Hospitalario.DTos
 {
+
     // DTO para crear una especialidad
     public class EspecialidadCreateDTO
     {
@@ -20,3 +21,4 @@
         public required string Nombre { get; set; }
     }
 }
+

@@ -1,38 +1,53 @@
 ﻿namespace Gestor_Hospitalario.DTos
 {
-    // DTO para crear un médico
     public class MedicoCreateDTO
     {
-        public required string Nombre { get; set; }
-        public required string Apellido { get; set; }
-        public required string Telefono { get; set; }
-        public required string Email { get; set; }
-        public required int EspecialidadID { get; set; }
-        public required int CentroID { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido { get; set; } = string.Empty;
+        public string Telefono { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+
+        public int EspecialidadID { get; set; }
+        public int CentroID { get; set; }
+
+        public int UsuarioID { get; set; } // ID del usuario que se relaciona con el médico 
     }
 
-    // DTO para mostrar info de un médico (lectura)
+
+    public class MedicoGetDto
+    {
+        public int MedicoID { get; set; }
+        public int EspecialidadID { get; set; }
+        public string NombreEspecialidad { get; set; }
+        public int CentroID { get; set; }
+        public string NombreCentro { get; set; }
+        public int UsuarioID { get; set; }
+        public string NombreMedico { get; set; }
+    }
     public class MedicoReadDTO
     {
         public int MedicoID { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string Telefono { get; set; }
-        public string Email { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido { get; set; } = string.Empty;
+        public string Telefono { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
-        // Info relacionada (solo para lectura)
+        // Estos campos son resultado de las relaciones
         public string EspecialidadNombre { get; set; } = string.Empty;
         public string CentroNombre { get; set; } = string.Empty;
     }
-
-    // DTO para actualizar un médico
     public class MedicoUpdateDTO
     {
-        public required string Nombre { get; set; }
-        public required string Apellido { get; set; }
-        public required string Telefono { get; set; }
-        public required string Email { get; set; }
-        public required int EspecialidadID { get; set; }
-        public required int CentroID { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido { get; set; } = string.Empty;
+        public string Telefono { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+
+        public int EspecialidadID { get; set; }
+        public int CentroID { get; set; }
+        public int UsuarioID { get; set; } // ID del usuario que se relaciona con el médico 
+
     }
+
+
 }

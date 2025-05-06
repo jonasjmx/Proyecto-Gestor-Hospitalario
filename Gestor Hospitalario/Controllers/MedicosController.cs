@@ -29,19 +29,15 @@ namespace Gestor_Hospitalario.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Validar que no exista un médico con el mismo nombre y apellido
-            var medicoExistente = await _context.Medicos
-                .FirstOrDefaultAsync(m => m.Nombre == dto.Nombre && m.Apellido == dto.Apellido);
+            // Verificar que el usuario exista
+            var usuario = await _context.Usuarios.FindAsync(dto.UsuarioID);
+            if (usuario == null)
+                return NotFound($"No se encontró el usuario con ID {dto.UsuarioID}.");
 
-            if (medicoExistente != null)
-                return BadRequest($"Ya existe un médico con el nombre {dto.Nombre} {dto.Apellido}.");
-
+            // Crear médico
             var nuevoMedico = new Medico
             {
-                Nombre = dto.Nombre,
-                Apellido = dto.Apellido,
-                Telefono = dto.Telefono,
-                Email = dto.Email,
+                UsuarioID = dto.UsuarioID,
                 EspecialidadID = dto.EspecialidadID,
                 CentroID = dto.CentroID
             };
@@ -49,29 +45,34 @@ namespace Gestor_Hospitalario.Controllers
             _context.Medicos.Add(nuevoMedico);
             await _context.SaveChangesAsync();
 
+            var especialidad = await _context.Especialidades.FindAsync(dto.EspecialidadID);
+            var centro = await _context.CentrosMedicos.FindAsync(dto.CentroID);
+
             var result = new MedicoReadDTO
             {
                 MedicoID = nuevoMedico.MedicoID,
-                Nombre = nuevoMedico.Nombre,
-                Apellido = nuevoMedico.Apellido,
-                Telefono = nuevoMedico.Telefono ?? "",
-                Email = nuevoMedico.Email ?? "",
-                EspecialidadNombre = (await _context.Especialidades.FindAsync(nuevoMedico.EspecialidadID))?.Nombre ?? "",
-                CentroNombre = (await _context.CentrosMedicos.FindAsync(nuevoMedico.CentroID))?.Nombre ?? ""
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Telefono = usuario.Telefono,
+                Email = usuario.Email,
+                EspecialidadNombre = especialidad?.Nombre ?? "",
+                CentroNombre = centro?.Nombre ?? ""
             };
 
             return CreatedAtAction(nameof(ObtenerMedico), new { id = result.MedicoID }, result);
         }
 
 
-        // Obtener médico por ID
+
+        // Fix for the CS1061 error in the ObtenerMedico method
         [HttpGet("Buscar/{id}")]
         public async Task<ActionResult<MedicoReadDTO>> ObtenerMedico(int id)
         {
             var medico = await _context.Medicos
-                                       .Include(m => m.Especialidad)
-                                       .Include(m => m.CentroMedico)
-                                       .FirstOrDefaultAsync(m => m.MedicoID == id);
+                .Include(m => m.Usuario)
+                .Include(m => m.Especialidad)
+                .Include(m => m.Centro) // Corrected: Include the Centro navigation property instead of CentroID
+                .FirstOrDefaultAsync(m => m.MedicoID == id);
 
             if (medico == null)
                 return NotFound();
@@ -79,39 +80,43 @@ namespace Gestor_Hospitalario.Controllers
             var dto = new MedicoReadDTO
             {
                 MedicoID = medico.MedicoID,
-                Nombre = medico.Nombre,
-                Apellido = medico.Apellido,
-                Telefono = medico.Telefono ?? "",
-                Email = medico.Email ?? "",
+                Nombre = medico.Usuario?.Nombre ?? "",
+                Apellido = medico.Usuario?.Apellido ?? "",
+                Telefono = medico.Usuario?.Telefono ?? "",
+                Email = medico.Usuario?.Email ?? "",
                 EspecialidadNombre = medico.Especialidad?.Nombre ?? "",
-                CentroNombre = medico.CentroMedico?.Nombre ?? ""
+                CentroNombre = medico.Centro?.Nombre ?? "" // Corrected: Access the Nombre property of the Centro navigation property
             };
 
             return Ok(dto);
         }
+
+
 
         // Obtener todos los médicos
         [HttpGet("Listar")]
         public async Task<ActionResult<IEnumerable<MedicoReadDTO>>> ListarMedicos()
         {
             var medicos = await _context.Medicos
+                                        .Include(m => m.Usuario)
                                         .Include(m => m.Especialidad)
-                                        .Include(m => m.CentroMedico)
+                                        .Include(m => m.CentroID)
                                         .ToListAsync();
 
             var dtos = medicos.Select(m => new MedicoReadDTO
             {
                 MedicoID = m.MedicoID,
-                Nombre = m.Nombre,
-                Apellido = m.Apellido,
-                Telefono = m.Telefono ?? "",
-                Email = m.Email ?? "",
+                Nombre = m.Usuario?.Nombre ?? "",
+                Apellido = m.Usuario?.Apellido ?? "",
+                Telefono = m.Usuario?.Telefono ?? "",
+                Email = m.Usuario?.Email ?? "",
                 EspecialidadNombre = m.Especialidad?.Nombre ?? "",
-                CentroNombre = m.CentroMedico?.Nombre ?? ""
+                CentroNombre = m.Centro?.Nombre ?? ""
             });
 
             return Ok(dtos);
         }
+
 
         // Actualizar un médico
         [HttpPut("Actualizar/{id}")]
@@ -119,38 +124,24 @@ namespace Gestor_Hospitalario.Controllers
         {
             var medico = await _context.Medicos.FindAsync(id);
             if (medico == null)
-                return NotFound($"No se encontró el médico con ID {id}.");
+                return NotFound();
 
-            // Validar que el Centro Médico exista
-            var centroExiste = await _context.CentrosMedicos.AnyAsync(c => c.CentroID == dto.CentroID);
-            if (!centroExiste)
-                return BadRequest($"No existe un centro médico con ID {dto.CentroID}.");
-
-            // Validar que la Especialidad exista
+            var usuarioExiste = await _context.Usuarios.AnyAsync(u => u.UsuarioID == dto.UsuarioID);
             var especialidadExiste = await _context.Especialidades.AnyAsync(e => e.EspecialidadID == dto.EspecialidadID);
-            if (!especialidadExiste)
-                return BadRequest($"No existe una especialidad con ID {dto.EspecialidadID}.");
+            var centroExiste = await _context.CentrosMedicos.AnyAsync(c => c.CentroID == dto.CentroID);
 
-            // Verificar que no exista otro médico con el mismo nombre y apellido (excluyendo al actual)
-            var medicoExistente = await _context.Medicos
-                .FirstOrDefaultAsync(m => m.MedicoID != id &&
-                                          m.Nombre == dto.Nombre &&
-                                          m.Apellido == dto.Apellido);
+            if (!usuarioExiste || !especialidadExiste || !centroExiste)
+                return BadRequest("Usuario, especialidad o centro no válidos.");
 
-            if (medicoExistente != null)
-                return Conflict("Ya existe otro médico con el mismo nombre y apellido.");
-
-            // Actualizamos los datos
-            medico.Nombre = dto.Nombre;
-            medico.Apellido = dto.Apellido;
-            medico.Telefono = dto.Telefono;
-            medico.Email = dto.Email;
+            medico.UsuarioID = dto.UsuarioID;
             medico.EspecialidadID = dto.EspecialidadID;
             medico.CentroID = dto.CentroID;
 
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+
 
         /// <summary>
         /// Elimina un médico por ID
@@ -168,4 +159,6 @@ namespace Gestor_Hospitalario.Controllers
             return NoContent();
         }
     }
+
 }
+

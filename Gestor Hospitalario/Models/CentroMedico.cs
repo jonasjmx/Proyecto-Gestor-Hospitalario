@@ -13,7 +13,6 @@ namespace Gestor_Hospitalario.Models
 
         public ICollection<Medico>? Medicos { get; set; }
         public ICollection<Empleado>? Empleados { get; set; }
-        public ICollection<ConsultaMedica>? ConsultasMedicas { get; set; }
+        public ICollection<Consulta>? ConsultasMedicas { get; set; }
     }
 }
-

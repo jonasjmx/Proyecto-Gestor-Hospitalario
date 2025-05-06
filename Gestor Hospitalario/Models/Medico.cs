@@ -7,19 +7,26 @@ namespace Gestor_Hospitalario.Models
     {
         [Key]
         public int MedicoID { get; set; }
-        public string Nombre { get; set; } = string.Empty;
-        public string Apellido { get; set; } = string.Empty;
-        public string? Telefono { get; set; }
-        public string? Email { get; set; }
 
+        // Relación con la tabla Especialidades
+        [Required]
         public int EspecialidadID { get; set; }
 
-        public Especialidad? Especialidad { get; set; }
+        [ForeignKey("EspecialidadID")]
+        public Especialidad Especialidad { get; set; }
 
+        // Relación con la tabla CentrosMedicos
+        [Required]
         public int CentroID { get; set; }
-        [ForeignKey("CentroID")]
-        public CentroMedico? CentroMedico { get; set; }
 
-        public ICollection<ConsultaMedica> ConsultasMedicas { get; set; } = new List<ConsultaMedica>();
+        [ForeignKey("CentroID")]
+        public CentroMedico Centro { get; set; }
+
+        // Relación con la tabla Usuarios
+        [Required]
+        public int UsuarioID { get; set; }
+
+        [ForeignKey("UsuarioID")]
+        public Usuario Usuario { get; set; }
     }
 }

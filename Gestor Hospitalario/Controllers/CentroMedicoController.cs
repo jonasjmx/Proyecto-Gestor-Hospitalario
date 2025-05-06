@@ -23,7 +23,7 @@ namespace Gestor_Hospitalario.Controllers
         }
 
         /// <summary>
-        /// Lista todos los centros médicos registrados
+        /// Lista todos los centros médicos registrados.
         /// </summary>
         [HttpGet("Listar")]
         public async Task<ActionResult<IEnumerable<CentroMedico>>> GetCentros()
@@ -32,7 +32,7 @@ namespace Gestor_Hospitalario.Controllers
         }
 
         /// <summary>
-        /// Obtiene un centro médico por su ID
+        /// Obtiene un centro médico por su ID.
         /// </summary>
         [HttpGet("Buscar/{id}")]
         public async Task<ActionResult<CentroMedico>> GetCentro(int id)
@@ -45,7 +45,7 @@ namespace Gestor_Hospitalario.Controllers
         }
 
         /// <summary>
-        /// Crea un nuevo centro médico (evita duplicados por nombre y dirección)
+        /// Crea un nuevo centro médico (evita duplicados por nombre y dirección).
         /// </summary>
         [HttpPost("Crear")]
         public async Task<IActionResult> CrearCentro([FromBody] CentroMedicoCreateDTO dto)
@@ -70,9 +70,8 @@ namespace Gestor_Hospitalario.Controllers
             return CreatedAtAction(nameof(GetCentro), new { id = nuevo.CentroID }, nuevo);
         }
 
-
         /// <summary>
-        /// Actualiza los datos de un centro médico existente
+        /// Actualiza los datos de un centro médico existente.
         /// </summary>
         [HttpPut("Actualizar/{id}")]
         public async Task<IActionResult> ActualizarCentro(int id, [FromBody] CentroMedicoUpdateDTO dto)
@@ -97,26 +96,19 @@ namespace Gestor_Hospitalario.Controllers
         }
 
         /// <summary>
-        /// Elimina un centro médico por ID
+        /// Elimina un centro médico por ID.
         /// </summary>
         [HttpDelete("Eliminar/{id}")]
         public async Task<IActionResult> EliminarCentro(int id)
         {
-            // Buscar el centro médico por el ID proporcionado
             var centro = await _context.CentrosMedicos.FindAsync(id);
-
-            // Si no se encuentra el centro médico, devolver NotFound
             if (centro == null)
                 return NotFound();
 
-            // Eliminar el centro médico de la base de datos
             _context.CentrosMedicos.Remove(centro);
             await _context.SaveChangesAsync();
 
-            // Devolver NoContent como respuesta exitosa
             return NoContent();
         }
-
-
     }
 }

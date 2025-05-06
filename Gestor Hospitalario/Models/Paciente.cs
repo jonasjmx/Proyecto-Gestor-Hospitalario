@@ -3,14 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gestor_Hospitalario.Models
 {
-    public class Empleado
+    public class Paciente
     {
-        [Key]
-        public int EmpleadoID { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string Cargo { get; set; }
+        [Key]
+        public int PacienteID { get; set; }
 
         // Relación con la tabla Usuarios
         [Required]
@@ -25,5 +22,9 @@ namespace Gestor_Hospitalario.Models
 
         [ForeignKey("CentroID")]
         public CentroMedico Centro { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime FechaRegistro { get; set; }
     }
 }

@@ -22,73 +22,64 @@ namespace Gestor_Hospitalario.Controllers
             _context = context;
         }
 
-
         /// <summary>
         /// Listar todos los empleados
         /// </summary>
         [HttpGet("Listar")]
-        public async Task<ActionResult<IEnumerable<EmpleadoReadDTO>>> ListarEmpleados()
+        public async Task<ActionResult<IEnumerable<EmpleadoGetDto>>> ListarEmpleados()
         {
             var empleados = await _context.Empleados
-                                          .Include(e => e.CentroMedico)
+                                          .Include(e => e.Centro)
+                                          .Select(e => new EmpleadoGetDto
+                                          {
+                                              EmpleadoID = e.EmpleadoID,
+                                              Cargo = e.Cargo,
+                                              UsuarioID = e.UsuarioID,
+                                              NombreEmpleado = e.Usuario.Nombre + " " + e.Usuario.Apellido,
+                                              CentroID = e.CentroID,
+                                              NombreCentro = e.Centro.Nombre
+                                          })
                                           .ToListAsync();
 
-            var lista = empleados.Select(e => new EmpleadoReadDTO
-            {
-                EmpleadoID = e.EmpleadoID,
-                Nombre = e.Nombre,
-                Apellido = e.Apellido,
-                Cargo = e.Cargo,
-                Telefono = e.Telefono,
-                Email = e.Email,
-                CentroMedicoNombre = e.CentroMedico?.Nombre ?? string.Empty
-            }).ToList();
-
-            return Ok(lista);
+            return Ok(empleados);
         }
-
 
         /// <summary>
         /// Crear un nuevo empleado
         /// </summary>
         [HttpPost("Crear")]
-        public async Task<ActionResult<EmpleadoReadDTO>> CrearEmpleado([FromBody] EmpleadoCreateDTO dto)
+        public async Task<ActionResult> CrearEmpleado([FromBody] EmpleadoCreateDto empleadoDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            // Obtener el usuario asociado con el UsuarioID
+            var usuario = await _context.Usuarios
+                                         .FirstOrDefaultAsync(u => u.UsuarioID == empleadoDto.UsuarioID);
 
-            // Verificar si ya existe un empleado con el mismo nombre y apellido (ignorando mayúsculas/minúsculas)
-            bool empleadoExiste = await _context.Empleados
-                .AnyAsync(e => e.Nombre.ToLower() == dto.Nombre.ToLower() && e.Apellido.ToLower() == dto.Apellido.ToLower());
-
-            if (empleadoExiste)
-                return Conflict($"Ya existe un empleado con el nombre '{dto.Nombre}' y apellido '{dto.Apellido}'.");
-
-            var nuevoEmpleado = new Empleado
+            if (usuario == null)
             {
-                Nombre = dto.Nombre,
-                Apellido = dto.Apellido,
-                Cargo = dto.Cargo,
-                Telefono = dto.Telefono,
-                Email = dto.Email,
-                CentroID = dto.CentroID
+                return BadRequest("El usuario asociado no existe.");
+            }
+
+            // Verificar si ya existe un empleado con el mismo nombre y apellido
+            var existeEmpleado = await _context.Empleados
+                                                .AnyAsync(e => e.Usuario.Nombre.Equals(usuario.Nombre, StringComparison.OrdinalIgnoreCase) &&
+                                                               e.Usuario.Apellido.Equals(usuario.Apellido, StringComparison.OrdinalIgnoreCase));
+
+            if (existeEmpleado)
+            {
+                return BadRequest("Ya existe un empleado con el mismo nombre y apellido.");
+            }
+
+            var empleado = new Empleado
+            {
+                Cargo = empleadoDto.Cargo,
+                UsuarioID = empleadoDto.UsuarioID,
+                CentroID = empleadoDto.CentroID
             };
 
-            _context.Empleados.Add(nuevoEmpleado);
+            _context.Empleados.Add(empleado);
             await _context.SaveChangesAsync();
 
-            var result = new EmpleadoReadDTO
-            {
-                EmpleadoID = nuevoEmpleado.EmpleadoID,
-                Nombre = nuevoEmpleado.Nombre,
-                Apellido = nuevoEmpleado.Apellido,
-                Cargo = nuevoEmpleado.Cargo,
-                Telefono = nuevoEmpleado.Telefono,
-                Email = nuevoEmpleado.Email,
-                CentroMedicoNombre = nuevoEmpleado.CentroMedico?.Nombre ?? string.Empty
-            };
-
-            return CreatedAtAction(nameof(GetEmpleado), new { id = result.EmpleadoID }, result);
+            return CreatedAtAction(nameof(GetEmpleado), new { id = empleado.EmpleadoID }, empleado);
         }
 
 
@@ -96,77 +87,97 @@ namespace Gestor_Hospitalario.Controllers
         /// Obtener empleado por ID
         /// </summary>
         [HttpGet("Buscar/{id}")]
-        public async Task<ActionResult<EmpleadoReadDTO>> GetEmpleado(int id)
+        public async Task<ActionResult<EmpleadoGetDto>> GetEmpleado(int id)
         {
             var empleado = await _context.Empleados
-                                         .Include(e => e.CentroMedico)
-                                         .FirstOrDefaultAsync(e => e.EmpleadoID == id);
+                                          .Include(e => e.Centro)
+                                          .FirstOrDefaultAsync(e => e.EmpleadoID == id);
 
             if (empleado == null)
+            {
                 return NotFound();
+            }
 
-            var result = new EmpleadoReadDTO
+            var empleadoDto = new EmpleadoGetDto
             {
                 EmpleadoID = empleado.EmpleadoID,
-                Nombre = empleado.Nombre,
-                Apellido = empleado.Apellido,
                 Cargo = empleado.Cargo,
-                Telefono = empleado.Telefono,
-                Email = empleado.Email,
-                CentroMedicoNombre = empleado.CentroMedico?.Nombre ?? string.Empty
+                UsuarioID = empleado.UsuarioID,
+                NombreEmpleado = empleado.Usuario.Nombre + " " + empleado.Usuario.Apellido,
+                CentroID = empleado.CentroID,
+                NombreCentro = empleado.Centro.Nombre
             };
 
-            return Ok(result);
+            return Ok(empleadoDto);
         }
 
         /// <summary>
         /// Actualizar datos de un empleado
         /// </summary>
         [HttpPut("Actualizar/{id}")]
-        public async Task<IActionResult> ActualizarEmpleado(int id, [FromBody] EmpleadoUpdateDTO dto)
+        public async Task<ActionResult> ActualizarEmpleado(int id, [FromBody] EmpleadoCreateDto empleadoDto)
         {
-            var empleado = await _context.Empleados.FindAsync(id);
+            // Obtener el empleado a actualizar
+            var empleado = await _context.Empleados
+                                         .Include(e => e.Usuario)
+                                         .FirstOrDefaultAsync(e => e.EmpleadoID == id);
+
             if (empleado == null)
-                return NotFound();
+            {
+                return NotFound("Empleado no encontrado.");
+            }
 
-            // Validar si otro empleado ya tiene el mismo nombre, apellido y correo electrónico
-            bool existeEmpleadoConMismoDatos = await _context.Empleados
-                .AnyAsync(e => e.EmpleadoID != id &&
-                               e.Nombre.ToLower() == dto.Nombre.ToLower() &&
-                               e.Apellido.ToLower() == dto.Apellido.ToLower() &&
-                               e.Email!.ToLower() == dto.Email!.ToLower());
+            // Obtener el usuario que se va a asignar
+            var usuario = await _context.Usuarios
+                                        .FirstOrDefaultAsync(u => u.UsuarioID == empleadoDto.UsuarioID);
 
-            if (existeEmpleadoConMismoDatos)
-                return Conflict($"Ya existe otro empleado con el nombre '{dto.Nombre}', apellido '{dto.Apellido}' y email '{dto.Email}'.");
+            if (usuario == null)
+            {
+                return BadRequest("El usuario asociado no existe.");
+            }
 
-            // Actualizar datos
-            empleado.Nombre = dto.Nombre;
-            empleado.Apellido = dto.Apellido;
-            empleado.Cargo = dto.Cargo;
-            empleado.Telefono = dto.Telefono;
-            empleado.Email = dto.Email;
-            empleado.CentroID = dto.CentroID;
+            // Verificar si ya existe otro empleado con el mismo nombre y apellido
+            var existeEmpleado = await _context.Empleados
+                                               .Include(e => e.Usuario)
+                                               .AnyAsync(e => e.EmpleadoID != id &&
+                                                              e.Usuario.Nombre.Equals(usuario.Nombre, StringComparison.OrdinalIgnoreCase) &&
+                                                              e.Usuario.Apellido.Equals(usuario.Apellido, StringComparison.OrdinalIgnoreCase));
 
+            if (existeEmpleado)
+            {
+                return BadRequest("Ya existe un empleado con el mismo nombre y apellido.");
+            }
+
+            // Actualizar los campos
+            empleado.Cargo = empleadoDto.Cargo;
+            empleado.UsuarioID = empleadoDto.UsuarioID;
+            empleado.CentroID = empleadoDto.CentroID;
+
+            _context.Empleados.Update(empleado);
             await _context.SaveChangesAsync();
-            return NoContent();
+
+            return Ok(empleado);
         }
+
 
         /// <summary>
         /// Eliminar un empleado por ID
         /// </summary>
         [HttpDelete("Eliminar/{id}")]
-        public async Task<IActionResult> EliminarEmpleado(int id)
+        public async Task<ActionResult> EliminarEmpleado(int id)
         {
             var empleado = await _context.Empleados.FindAsync(id);
 
             if (empleado == null)
-                return NotFound($"No se encontró ningún empleado con el ID {id}.");
+            {
+                return NotFound();
+            }
 
             _context.Empleados.Remove(empleado);
             await _context.SaveChangesAsync();
 
-            return Ok($"Empleado con ID {id} eliminado exitosamente.");
+            return NoContent(); // Devuelve un código 204 si la eliminación fue exitosa
         }
-
     }
+
 }
