@@ -14,18 +14,21 @@ SET GLOBAL validate_password.policy = LOW;
 
 -- Crear usuarios para las sucursales
 -- Estos usuarios tendrán acceso a la base de datos desde direcciones IP específicas.
-CREATE USER 'guayaquil'@'192.168.1.20' IDENTIFIED BY 'qweQWE!@#';
-CREATE USER 'cuenca'@'192.168.1.47' IDENTIFIED BY 'qweQWE!@#';
+CREATE USER 'guayaquil'@'192.168.1.57' IDENTIFIED BY 'qweQWE!@#';
+CREATE USER 'cuenca'@'192.168.1.8' IDENTIFIED BY 'qweQWE!@#';
+CREATE USER 'latacunga'@'192.168.1.19' IDENTIFIED BY 'qweQWE!@#';
 
 -- Otorgar privilegios a los usuarios de las sucursales
 -- Se otorgan todos los privilegios sobre la base de datos "GestionHospitalaria".
-GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'guayaquil'@'192.168.1.20';
-GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'cuenca'@'192.168.1.47';
+GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'guayaquil'@'192.168.1.57';
+GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'cuenca'@'192.168.1.8';
+GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'latacunga'@'192.168.1.19';
 FLUSH PRIVILEGES;
 
 -- Eliminar usuarios (opcional, para limpieza)
-DROP USER 'guayaquil'@'192.168.1.20';
-DROP USER 'cuenca'@'192.168.1.47';
+DROP USER 'guayaquil'@'10.79.5.223';
+DROP USER 'cuenca'@'10.79.5.242';
+DROP USER 'latacunga'@'192.168.1.19';
 FLUSH PRIVILEGES;
 
 -- Crear usuario para replicación
@@ -41,15 +44,18 @@ DROP USER 'replicator'@'%';
 FLUSH PRIVILEGES;
 
 -- Crear usuarios de replicación con IP específicas
-CREATE USER 'replicator'@'192.168.1.20' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-CREATE USER 'replicator'@'192.168.1.47' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.20';
-GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.47';
+CREATE USER 'replicator'@'192.168.1.57' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
+CREATE USER 'replicator'@'192.168.1.8' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
+CREATE USER 'replicator'@'192.168.1.19' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.57';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.8';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.19';
 FLUSH PRIVILEGES;
 
 -- Eliminar usuarios de replicación con IP específicas (opcional)
-DROP USER 'replicator'@'10.79.22.102';
-DROP USER 'replicator'@'10.79.22.85';
+DROP USER 'replicator'@'10.79.4.18';
+DROP USER 'replicator'@'10.79.4.33';
+DROP USER 'replicator'@'10.79.5.223';
 FLUSH PRIVILEGES;
 
 -- ##################################################################################################
@@ -64,6 +70,7 @@ SHOW VARIABLES LIKE '%ssl%';
 
 -- Cambiar el plugin de autenticación del usuario replicator
 ALTER USER 'replicator'@'%' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
+ALTER USER 'replicator'@'10.79.22.102' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
 ALTER USER 'replicator'@'10.79.22.102' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
 ALTER USER 'replicator'@'10.79.22.85' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
 FLUSH PRIVILEGES;
@@ -152,7 +159,7 @@ CREATE TABLE Empleado (
     Cargo VARCHAR(50) NOT NULL,
     UsuarioID INT NOT NULL,
     CentroID INT NOT NULL,
-    FOREIGN KEY (CentroID) REFERENCES CentroMedico(CentroID)
+    FOREIGN KEY (CentroID) REFERENCES CentroMedico(CentroID),
     FOREIGN KEY (UsuarioID) REFERENCES Usuario(UsuarioID)
 );
 
@@ -172,14 +179,12 @@ CREATE TABLE Consulta (
     ConsultaID INT AUTO_INCREMENT PRIMARY KEY,
     MedicoID INT NOT NULL,
     PacienteID INT NOT NULL,
-    FechaConsulta DATE NOT NULL,   -- Mantienes la columna de fecha
-    HoraConsulta TIME NOT NULL,    -- Nueva columna para la hora
+    FechaConsulta DATE NOT NULL,
     Diagnostico TEXT,
     Receta TEXT,
-    FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID),
-    FOREIGN KEY (PacienteID) REFERENCES Pacientes(PacienteID)
+    FOREIGN KEY (MedicoID) REFERENCES Medico(MedicoID),
+    FOREIGN KEY (PacienteID) REFERENCES Paciente(PacienteID)
 );
-
 
 -- ##################################################################################################
 -- INSERTAR DATOS DE PRUEBA

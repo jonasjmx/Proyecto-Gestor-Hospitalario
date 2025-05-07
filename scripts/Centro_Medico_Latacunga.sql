@@ -1,6 +1,6 @@
 -- ##################################################################################################
 -- Script de configuración para la replicación en MySQL (Servidor Esclavo)
--- Archivo: Centro_Medico_Cuenca.sql
+-- Archivo: Centro_Medico_Latacunga.sql
 -- Descripción: Este script configura un servidor esclavo para la replicación de datos desde un servidor maestro.
 -- Incluye la configuración inicial del esclavo, verificaciones, reinicio de replicación y creación de vistas.
 -- ##################################################################################################
@@ -89,8 +89,10 @@ USE GestionHospitalaria;
 -- Esto permite realizar consultas específicas sobre los datos replicados.
 CREATE VIEW ConsultasLATACUNGA AS
 SELECT * 
-FROM GestionHospitalaria.Consultas 
-WHERE Ubicacion = 'LATACUNGA';
+FROM GestionHospitalaria.Consultas C, GestionHospitalaria.Medicos M, GestionHospitalaria.CentroMedico CM
+WHERE C.MedicoID = M.MedicoID
+AND M.CentroID = CM.CentroID
+AND CM.CentroMedico = 'Centro Médico Latacunga';
 
 -- ##################################################################################################
 -- FIN DEL SCRIPT

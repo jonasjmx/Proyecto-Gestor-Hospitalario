@@ -89,8 +89,10 @@ USE GestionHospitalaria;
 -- Esto permite realizar consultas específicas sobre los datos replicados.
 CREATE VIEW ConsultasGUAYAQUIL AS
 SELECT * 
-FROM GestionHospitalaria.Consultas 
-WHERE Ubicacion = 'GUAYAQUIL';
+FROM GestionHospitalaria.Consultas C, GestionHospitalaria.Medicos M, GestionHospitalaria.CentroMedico CM
+WHERE C.MedicoID = M.MedicoID
+AND M.CentroID = CM.CentroID
+AND CM.CentroMedico = 'Centro Médico Guayaquil';
 
 -- ##################################################################################################
 -- FIN DEL SCRIPT
