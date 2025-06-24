@@ -21,11 +21,11 @@ CREATE DATABASE IF NOT EXISTS GestionHospitalaria;
 -- NOTA: Asegúrate de que los valores de MASTER_HOST, MASTER_USER, MASTER_PASSWORD, MASTER_LOG_FILE y MASTER_LOG_POS
 -- coincidan con los valores del servidor maestro. Estos valores deben ser proporcionados por el administrador del maestro.
 CHANGE MASTER TO
-    MASTER_HOST 	= '192.168.1.30',               -- Dirección IP o nombre del host del servidor maestro
+    MASTER_HOST 	= '34.138.196.138',               -- Dirección IP o nombre del host del servidor maestro
     MASTER_USER 	= 'replicator',                -- Usuario configurado para la replicación en el maestro
-    MASTER_PASSWORD = 'qweQWE!@#',          -- Contraseña del usuario de replicación
-    MASTER_LOG_FILE = 'mysql-bin.000004',      -- Archivo de registro binario actual en el maestro
-    MASTER_LOG_POS 	= 4349;                     -- Posición en el archivo binario del maestro
+    MASTER_PASSWORD = 'Centromedico@123',          -- Contraseña del usuario de replicación
+    MASTER_LOG_FILE = 'mysql-bin.000002',      -- Archivo de registro binario actual en el maestro
+    MASTER_LOG_POS 	= 9641;                     -- Posición en el archivo binario del maestro
 
 -- Iniciar el proceso de replicación en el servidor esclavo.
 START SLAVE;
@@ -35,7 +35,7 @@ START SLAVE;
 -- ##################################################################################################
 
 -- Mostrar los primeros 10 eventos del relay log para verificar que los datos se están replicando correctamente.
-SHOW RELAYLOG EVENTS IN 'mysql-relay-bin.000002' LIMIT 10;
+SHOW RELAYLOG EVENTS IN 'mysql-relay-bin.000002';
 
 -- Mostrar las variables relacionadas con la replicación para confirmar la configuración.
 SHOW VARIABLES LIKE '%replicate%';
@@ -58,14 +58,41 @@ RESET SLAVE ALL;
 
 -- Reconfigurar el esclavo con nuevos valores (si es necesario).
 CHANGE MASTER TO
-    MASTER_HOST 	= '192.168.1.30',               -- Dirección IP o nombre del host del servidor maestro
+    MASTER_HOST 	= '34.138.196.138',               -- Dirección IP o nombre del host del servidor maestro
     MASTER_USER 	= 'replicator',                -- Usuario configurado para la replicación en el maestro
-    MASTER_PASSWORD = 'qweQWE!@#',          -- Contraseña del usuario de replicación
-    MASTER_LOG_FILE = 'mysql-bin.000004',      -- Archivo de registro binario actual en el maestro
-    MASTER_LOG_POS 	= 4349;                     -- Posición en el archivo binario del maestro
+    MASTER_PASSWORD = 'Centromedico@123',          -- Contraseña del usuario de replicación
+    MASTER_LOG_FILE = 'mysql-bin.000003',      -- Archivo de registro binario actual en el maestro
+    MASTER_LOG_POS 	= 754;                     -- Posición en el archivo binario del maestro
 
 -- Iniciar nuevamente el proceso de replicación después de la reconfiguración.
 START SLAVE;
+
+-- ##################################################################################################
+-- VERSIONES DE MYSQL SUPERIOR A 8.0.22
+-- ##################################################################################################
+
+-- Si estás utilizando MySQL 8.0.22 o superior, es necesario habilitar la compatibilidad con versiones anteriores.
+SET GLOBAL show_compatibility_56 = ON;
+
+-- Detener el proceso de replicación en caso de que sea necesario realizar ajustes.
+STOP REPLICA;
+
+-- Reiniciar la configuración del esclavo para limpiar cualquier configuración previa.
+RESET REPLICA ALL;
+
+-- Reconfigurar el esclavo con nuevos valores (si es necesario).
+CHANGE REPLICATION SOURCE TO
+    SOURCE_HOST 	= '10.0.0.2',
+    SOURCE_USER 	= 'replicator',
+    SOURCE_PASSWORD = 'Centromedico@123',
+    SOURCE_LOG_FILE = 'mysql-bin.000006',
+    SOURCE_LOG_POS 	= 10580;
+
+-- Iniciar nuevamente el proceso de replicación después de la reconfiguración.
+START REPLICA;
+
+-- Mostrar el estado del esclavo para verificar que la replicación esté funcionando correctamente.
+SHOW REPLICA STATUS;
 
 -- ##################################################################################################
 -- INFORMACIÓN ADICIONAL PARA LA VERIFICACIÓN

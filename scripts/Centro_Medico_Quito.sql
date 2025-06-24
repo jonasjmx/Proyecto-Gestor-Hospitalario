@@ -14,26 +14,34 @@ SET GLOBAL validate_password.policy = LOW;
 
 -- Crear usuarios para las sucursales
 -- Estos usuarios tendrán acceso a la base de datos desde direcciones IP específicas.
-CREATE USER 'guayaquil'@'192.168.1.57' IDENTIFIED BY 'qweQWE!@#';
-CREATE USER 'cuenca'@'192.168.1.8' IDENTIFIED BY 'qweQWE!@#';
-CREATE USER 'latacunga'@'192.168.1.19' IDENTIFIED BY 'qweQWE!@#';
+CREATE USER 'guayaquil'@'34.138.97.31' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+CREATE USER 'cuenca'@'34.23.230.158' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+CREATE USER 'latacunga'@'34.138.113.161' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+
+CREATE USER 'doctor1'@'%' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+GRANT ALL PRIVILEGES ON CentroMedicoDB.* TO 'doctor1'@'%';
+FLUSH PRIVILEGES;
+
+CREATE USER 'doctor2'@'%' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+GRANT ALL PRIVILEGES ON CentroMedicoDB.* TO 'doctor2'@'%';
+FLUSH PRIVILEGES;
 
 -- Otorgar privilegios a los usuarios de las sucursales
 -- Se otorgan todos los privilegios sobre la base de datos "GestionHospitalaria".
-GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'guayaquil'@'192.168.1.57';
-GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'cuenca'@'192.168.1.8';
-GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'latacunga'@'192.168.1.19';
+GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'guayaquil'@'34.138.97.31';
+GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'cuenca'@'34.23.230.158';
+GRANT ALL PRIVILEGES ON GestionHospitalaria.* TO 'latacunga'@'34.138.113.161';
 FLUSH PRIVILEGES;
 
 -- Eliminar usuarios (opcional, para limpieza)
-DROP USER 'guayaquil'@'10.79.5.223';
-DROP USER 'cuenca'@'10.79.5.242';
-DROP USER 'latacunga'@'192.168.1.19';
+DROP USER 'guayaquil'@'34.138.97.31';
+DROP USER 'cuenca'@'34.23.230.158';
+DROP USER 'latacunga'@'34.138.113.161';
 FLUSH PRIVILEGES;
 
 -- Crear usuario para replicación
 -- Este usuario se utiliza para la replicación entre servidores MySQL.
-CREATE USER 'replicator'@'%' IDENTIFIED BY 'qweQWE!@#';
+CREATE USER 'replicator'@'%' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
 
 -- Otorgar privilegios de replicación al usuario replicator
 GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'%';
@@ -44,18 +52,18 @@ DROP USER 'replicator'@'%';
 FLUSH PRIVILEGES;
 
 -- Crear usuarios de replicación con IP específicas
-CREATE USER 'replicator'@'192.168.1.57' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-CREATE USER 'replicator'@'192.168.1.8' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-CREATE USER 'replicator'@'192.168.1.19' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.57';
-GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.8';
-GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'192.168.1.19';
+CREATE USER 'replicator'@'34.138.97.31' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+CREATE USER 'replicator'@'34.23.230.158' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+CREATE USER 'replicator'@'34.138.113.161' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'34.138.97.31';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'34.23.230.158';
+GRANT REPLICATION SLAVE ON *.* TO 'replicator'@'34.138.113.161';
 FLUSH PRIVILEGES;
 
 -- Eliminar usuarios de replicación con IP específicas (opcional)
-DROP USER 'replicator'@'10.79.4.18';
-DROP USER 'replicator'@'10.79.4.33';
-DROP USER 'replicator'@'10.79.5.223';
+DROP USER 'replicator'@'34.138.97.31';
+DROP USER 'replicator'@'34.23.230.158';
+DROP USER 'replicator'@'34.138.113.161';
 FLUSH PRIVILEGES;
 
 -- ##################################################################################################
@@ -68,11 +76,14 @@ SHOW VARIABLES LIKE 'log_bin';
 -- Verificar si SSL está habilitado (para conexiones seguras)
 SHOW VARIABLES LIKE '%ssl%';
 
+-- Verificar el plugin de autenticación utilizado por el servidor
+INSTALL PLUGIN mysql_native_password SONAME 'auth_native_password.so';
+
 -- Cambiar el plugin de autenticación del usuario replicator
-ALTER USER 'replicator'@'%' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-ALTER USER 'replicator'@'10.79.22.102' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-ALTER USER 'replicator'@'10.79.22.102' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
-ALTER USER 'replicator'@'10.79.22.85' IDENTIFIED WITH mysql_native_password BY 'qweQWE!@#';
+ALTER USER 'replicator'@'%' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+ALTER USER 'replicator'@'34.138.97.31' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+ALTER USER 'replicator'@'34.23.230.158' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
+ALTER USER 'replicator'@'34.138.113.161' IDENTIFIED WITH mysql_native_password BY 'Centromedico@123';
 FLUSH PRIVILEGES;
 
 -- Verificar el UUID del servidor (debe ser único para replicación)
@@ -99,6 +110,24 @@ FLUSH HOSTS;
 
 -- Mostrar todos los usuarios configurados en el servidor
 SELECT User, Host FROM mysql.user;
+
+-- ##################################################################################################
+-- VERIFICACIONES FINALES
+-- ##################################################################################################
+
+-- Mostrar la versión del servidor MySQL
+SELECT @@version;
+
+-- Mostrar el estado del maestro para replicación
+SHOW MASTER STATUS;
+
+-- Nota: Si los valores cambian después de un reinicio, actualice los esclavos.
+
+CHANGE REPLICATION SOURCE TO
+SOURCE_HOST='ip_source',
+SOURCE_USER='replicator',
+SOURCE_PASSWORD='password_seguro',
+MASTER_AUTO_POSITION = 1;
 
 -- ##################################################################################################
 -- CONFIGURACIÓN DE LA BASE DE DATOS
@@ -204,6 +233,11 @@ VALUES
 ('Juan', 'Perez', 'MASCULINO', '1985-05-15', 'Calle 1', '0991234567', 'juan.perez@example.com', 'password123', 'ADMIN'),
 ('Maria', 'Gomez', 'FEMENINO', '1990-08-20', 'Calle 2', '0997654321', 'maria.gomez@example.com', 'password456', 'MEDICO'),
 ('Carlos', 'Lopez', 'MASCULINO', '1980-03-10', 'Calle 3', '0991122334', 'carlos.lopez@example.com', 'password789', 'EMPLEADO');
+commit;
+
+INSERT INTO Usuario (Nombre, Apellido, Sexo, FechaNacimiento, Direccion, Telefono, Email, Password, Rol)
+VALUES 
+('Maria1', 'Gomez1', 'FEMENINO', '1990-08-20', 'Calle 2', '0997654321', 'maria1.gomez1@example.com', 'password456', 'MEDICO');
 
 -- Insertar datos en la tabla Especialidades
 INSERT INTO Especialidad (Nombre)
@@ -241,13 +275,129 @@ VALUES
 (3, 3, '2023-03-15', 'Consulta dermatológica', 'Crema hidratante');
 
 -- ##################################################################################################
--- VERIFICACIONES FINALES
+-- CREACIÓN DE LA BASE DE DATOS PARA EL CENTRO MÉDICO
 -- ##################################################################################################
 
--- Mostrar la versión del servidor MySQL
-SELECT @@version;
+CREATE DATABASE IF NOT EXISTS CentroMedicoDB;
+USE CentroMedicoDB;
 
--- Mostrar el estado del maestro para replicación
-SHOW MASTER STATUS;
+-- Tabla de centros médicos
+CREATE TABLE CentrosMedicos (
+    CentroID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Ciudad VARCHAR(100) NOT NULL,
+    Direccion VARCHAR(200),
+    Telefono VARCHAR(20)
+);
 
--- Nota: Si los valores cambian después de un reinicio, actualice los esclavos.
+-- Tabla de especialidades
+CREATE TABLE Especialidades (
+    EspecialidadID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(255)
+);
+
+-- Tabla de usuarios para inicio de sesión
+CREATE TABLE UsuariosCentro (
+    UsuarioID INT AUTO_INCREMENT PRIMARY KEY,
+    CentroID INT NOT NULL,
+    Email VARCHAR(75) NOT NULL UNIQUE,
+    Contrasena VARCHAR(75) NOT NULL,
+    FOREIGN KEY (CentroID) REFERENCES CentrosMedicos(CentroID)
+);
+
+-- Tabla de médicos
+CREATE TABLE Medicos (
+    MedicoID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    EspecialidadID INT NOT NULL,
+    CentroID INT NOT NULL,
+    Email VARCHAR(100),
+    Telefono VARCHAR(20),
+    FOREIGN KEY (EspecialidadID) REFERENCES Especialidades(EspecialidadID),
+    FOREIGN KEY (CentroID) REFERENCES CentrosMedicos(CentroID)
+);
+
+-- Tabla de asignación de especialidades
+CREATE TABLE AsignacionEspecialidades (
+    AsignacionID INT AUTO_INCREMENT PRIMARY KEY,
+    MedicoID INT NOT NULL,
+    EspecialidadID INT NOT NULL,
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID),
+    FOREIGN KEY (EspecialidadID) REFERENCES Especialidades(EspecialidadID)
+);
+
+-- Tabla de empleados
+CREATE TABLE Empleados (
+    EmpleadoID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Cargo VARCHAR(100),
+    Email VARCHAR(100),
+    Telefono VARCHAR(20)
+);
+
+-- Tabla de clientes
+CREATE TABLE Clientes (
+    ClienteID INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Correo VARCHAR(100),
+    Telefono VARCHAR(20)
+);
+
+-- Tabla de consultas
+CREATE TABLE Consultas (
+    ConsultaID INT AUTO_INCREMENT PRIMARY KEY,
+    MedicoID INT NOT NULL,
+    ClienteID INT NOT NULL,
+    FechaConsulta DATETIME NOT NULL,
+    Diagnostico VARCHAR(255),
+    Tratamiento VARCHAR(255),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID),
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
+-- Insertar datos de prueba
+
+INSERT INTO CentrosMedicos (Nombre, Ciudad, Direccion, Telefono) VALUES
+('Centro Médico Quito', 'Quito', 'Av. Amazonas 123', '022345678'),
+('Centro Médico Guayaquil', 'Guayaquil', 'Malecón 2000', '042345678'),
+('Centro Médico Cuenca', 'Cuenca', 'Av. Solano 456', '072345678');
+
+INSERT INTO Especialidades (Nombre, Descripcion) VALUES
+('Cardiología', 'Especialidad en enfermedades del corazón'),
+('Pediatría', 'Especialidad en atención infantil'),
+('Dermatología', 'Especialidad en enfermedades de la piel');
+commit;
+
+INSERT INTO UsuariosCentro (CentroID, Email, Contrasena) VALUES
+(1, 'admin@norte.com', 'admin123'),
+(2, 'admin@sur.com', 'admin456'),
+(3, 'admin@este.com', 'admin789');
+
+INSERT INTO Medicos (Nombre, Apellido, EspecialidadID, CentroID, Email, Telefono) VALUES
+('Juan', 'Pérez', 1, 1, 'juan.perez@medico.com', '0991111111'),
+('María', 'Gómez', 2, 2, 'maria.gomez@medico.com', '0992222222'),
+('Carlos', 'Lopez', 3, 3, 'carlos.lopez@medico.com', '0993333333');
+
+INSERT INTO AsignacionEspecialidades (MedicoID, EspecialidadID) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO Empleados (Nombre, Apellido, Cargo, Email, Telefono) VALUES
+('Ana', 'Martínez', 'Recepcionista', 'ana.martinez@empleado.com', '0981111111'),
+('Luis', 'Ramírez', 'Enfermero', 'luis.ramirez@empleado.com', '0982222222'),
+('Sofía', 'Vega', 'Administrador', 'sofia.vega@empleado.com', '0983333333');
+
+INSERT INTO Clientes (Nombre, Apellido, Correo, Telefono) VALUES
+('Pedro', 'Alvarez', 'pedro.alvarez@cliente.com', '0971111111'),
+('Lucía', 'Mora', 'lucia.mora@cliente.com', '0972222222'),
+('Miguel', 'Salas', 'miguel.salas@cliente.com', '0973333333');
+
+INSERT INTO Consultas (MedicoID, ClienteID, FechaConsulta, Diagnostico, Tratamiento) VALUES
+(1, 1, '2024-06-08 09:00:00', 'Chequeo general', 'Paracetamol 500mg'),
+(2, 2, '2024-06-08 10:00:00', 'Consulta pediátrica', 'Ibuprofeno 200mg'),
+(3, 3, '2024-06-08 11:00:00', 'Consulta dermatológica', 'Crema hidratante');

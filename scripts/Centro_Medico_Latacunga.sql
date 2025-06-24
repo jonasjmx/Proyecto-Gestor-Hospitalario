@@ -58,11 +58,11 @@ RESET SLAVE ALL;
 
 -- Reconfigurar el esclavo con nuevos valores (si es necesario).
 CHANGE MASTER TO
-    MASTER_HOST 	= '192.168.1.30',               -- Dirección IP o nombre del host del servidor maestro
+    MASTER_HOST 	= '34.138.196.138',               -- Dirección IP o nombre del host del servidor maestro
     MASTER_USER 	= 'replicator',                -- Usuario configurado para la replicación en el maestro
-    MASTER_PASSWORD = 'qweQWE!@#',          -- Contraseña del usuario de replicación
-    MASTER_LOG_FILE = 'mysql-bin.000004',      -- Archivo de registro binario actual en el maestro
-    MASTER_LOG_POS 	= 4349;                     -- Posición en el archivo binario del maestro
+    MASTER_PASSWORD = 'Centromedico@123',          -- Contraseña del usuario de replicación
+    MASTER_LOG_FILE = 'mysql-bin.000003',      -- Archivo de registro binario actual en el maestro
+    MASTER_LOG_POS 	= 5058;                     -- Posición en el archivo binario del maestro
 
 -- Iniciar nuevamente el proceso de replicación después de la reconfiguración.
 START SLAVE;
