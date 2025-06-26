@@ -1,0 +1,336 @@
+/* ===== EMPLEADOS - DISEÑO MODERNO ===== */
+
+.empleados-container {
+  padding: var(--spacing-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.empleados-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.empleados-title {
+  color: var(--gray-900);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin: 0;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.empleados-search-section {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--spacing-4);
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+}
+
+.empleados-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+.empleados-stat-card {
+  background: var(--surface-card);
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-200);
+  text-align: center;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.empleados-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.empleados-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-hover);
+}
+
+.empleados-stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.empleados-stat-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Formulario de empleado específico */
+.empleado-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.empleado-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.empleado-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.empleado-salary-input {
+  position: relative;
+}
+
+.empleado-salary-input::before {
+  content: '$';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.empleado-salary-input input {
+  padding-left: 2rem;
+}
+
+.empleado-cargo-select {
+  position: relative;
+}
+
+.empleado-cargo-select select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+/* Tabla de empleados específica */
+.empleados-table-container {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.empleados-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.empleados-table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.empleados-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.empleados-table tbody tr:hover {
+  background: var(--hover-background);
+}
+
+.empleado-cargo-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.empleado-cargo-badge.enfermero {
+  background: var(--success-light);
+  color: var(--success-color);
+}
+
+.empleado-cargo-badge.doctor {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.empleado-cargo-badge.administrativo {
+  background: var(--warning-light);
+  color: var(--warning-color);
+}
+
+.empleado-cargo-badge.tecnico {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.empleado-salary-cell {
+  font-weight: 600;
+  color: var(--success-color);
+}
+
+.empleado-contact-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.empleado-email {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.empleado-email:hover {
+  text-decoration: underline;
+}
+
+.empleado-phone {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Acciones de empleado */
+.empleado-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.empleado-action-btn {
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empleado-edit-btn {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.empleado-edit-btn:hover {
+  background: var(--info-color);
+  color: white;
+}
+
+.empleado-delete-btn {
+  background: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.empleado-delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* Loading y empty states específicos */
+.empleados-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.empleados-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.empleados-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .empleados-container {
+    padding: 1rem;
+  }
+  
+  .empleados-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .empleados-form {
+    grid-template-columns: 1fr;
+  }
+  
+  .empleado-form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .empleados-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .empleados-table-container {
+    overflow-x: auto;
+  }
+  
+  .empleados-table {
+    min-width: 800px;
+  }
+}
+
+@media (max-width: 480px) {
+  .empleados-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .empleado-contact-cell {
+    font-size: 0.8rem;
+  }
+}

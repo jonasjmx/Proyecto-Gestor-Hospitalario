@@ -1,0 +1,481 @@
+/* ===== CENTROS MÉDICOS - DISEÑO MODERNO ===== */
+
+.centros-medicos-container {
+  padding: var(--spacing-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.centros-medicos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.centros-medicos-title {
+  color: var(--gray-900);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin: 0;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.centros-medicos-search-section {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--spacing-4);
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+}
+
+.centros-medicos-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+.centros-medicos-stat-card {
+  background: var(--surface-card);
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-200);
+  text-align: center;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.centros-medicos-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.centros-medicos-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-hover);
+}
+
+.centros-medicos-stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.centros-medicos-stat-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Grid view para centros médicos */
+.centros-medicos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.centro-medico-card {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.centro-medico-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary-color);
+}
+
+.centro-medico-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.centro-medico-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.centro-medico-card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.centro-medico-card-id {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.centro-medico-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.centro-medico-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.centro-medico-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.centro-medico-info-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.centro-medico-info-text {
+  color: var(--text-color);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.centro-medico-email {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.centro-medico-email:hover {
+  text-decoration: underline;
+}
+
+.centro-medico-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Formulario de centro médico específico */
+.centro-medico-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.centro-medico-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.centro-medico-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.centro-medico-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.centro-medico-direccion-input {
+  position: relative;
+}
+
+.centro-medico-phone-input {
+  position: relative;
+}
+
+.centro-medico-email-input {
+  position: relative;
+}
+
+/* Tabla de centros médicos específica */
+.centros-medicos-table-container {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.centros-medicos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.centros-medicos-table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.centros-medicos-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+.centros-medicos-table tbody tr:hover {
+  background: var(--hover-background);
+}
+
+.centro-medico-nombre-cell {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.centro-medico-direccion-cell {
+  max-width: 250px;
+  line-height: 1.4;
+}
+
+.centro-medico-contacto-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.centro-medico-phone {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.centro-medico-email-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.centro-medico-email-link:hover {
+  text-decoration: underline;
+}
+
+.centro-medico-id-cell {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+/* Acciones de centro médico */
+.centro-medico-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.centro-medico-action-btn {
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.centro-medico-view-btn {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.centro-medico-view-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.centro-medico-edit-btn {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.centro-medico-edit-btn:hover {
+  background: var(--info-color);
+  color: white;
+}
+
+.centro-medico-delete-btn {
+  background: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.centro-medico-delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* View toggle */
+.centros-medicos-view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--card-background);
+  padding: 0.25rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.view-toggle-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+}
+
+.view-toggle-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.view-toggle-btn:hover:not(.active) {
+  background: var(--hover-background);
+  color: var(--text-color);
+}
+
+/* Loading y empty states específicos */
+.centros-medicos-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.centros-medicos-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.centros-medicos-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .centros-medicos-container {
+    padding: 1rem;
+  }
+  
+  .centros-medicos-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .centros-medicos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .centro-medico-form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .centros-medicos-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .centros-medicos-table-container {
+    overflow-x: auto;
+  }
+  
+  .centros-medicos-table {
+    min-width: 800px;
+  }
+  
+  .centro-medico-card {
+    margin-bottom: 1rem;
+  }
+  
+  .centros-medicos-view-toggle {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .centros-medicos-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .centro-medico-card-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .centro-medico-card-actions {
+    justify-content: center;
+  }
+  
+  .view-toggle-btn {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .centro-medico-info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

@@ -1,0 +1,420 @@
+/* ===== CONSULTAS - DISEÑO MODERNO ===== */
+
+.consultas-container {
+  padding: var(--spacing-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.consultas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.consultas-title {
+  color: var(--gray-900);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin: 0;
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.consultas-search-section {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--spacing-4);
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+}
+
+.consultas-filters {
+  display: flex;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.consulta-filter-select {
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  background: var(--surface-50);
+  color: var(--gray-900);
+  min-width: 160px;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  transition: var(--transition-base);
+}
+
+.consulta-filter-select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.consultas-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.consultas-stat-card {
+  background: var(--card-background);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.consultas-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.consultas-stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.consultas-stat-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.consultas-stat-card.programadas .consultas-stat-number {
+  color: var(--warning-color);
+}
+
+.consultas-stat-card.completadas .consultas-stat-number {
+  color: var(--success-color);
+}
+
+.consultas-stat-card.canceladas .consultas-stat-number {
+  color: var(--danger-color);
+}
+
+.consultas-stat-card.total .consultas-stat-number {
+  color: var(--primary-color);
+}
+
+/* Formulario de consulta específico */
+.consulta-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.consulta-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.consulta-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.consulta-textarea {
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.consulta-datetime-input {
+  position: relative;
+}
+
+.consulta-estado-select {
+  position: relative;
+}
+
+.consulta-estado-select select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+/* Tabla de consultas específica */
+.consultas-table-container {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.consultas-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.consultas-table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.consultas-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+.consultas-table tbody tr:hover {
+  background: var(--hover-background);
+}
+
+.consulta-estado-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.consulta-estado-badge.programada {
+  background: var(--warning-light);
+  color: var(--warning-color);
+}
+
+.consulta-estado-badge.completada {
+  background: var(--success-light);
+  color: var(--success-color);
+}
+
+.consulta-estado-badge.cancelada {
+  background: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.consulta-estado-badge.en-progreso {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.consulta-fecha-cell {
+  font-weight: 600;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+.consulta-motivo-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.consulta-diagnostico-cell {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.consulta-paciente-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.consulta-paciente-id {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.consulta-medico-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.consulta-medico-id {
+  font-weight: 600;
+  color: var(--info-color);
+}
+
+/* Acciones de consulta */
+.consulta-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.consulta-action-btn {
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.consulta-view-btn {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.consulta-view-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.consulta-edit-btn {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.consulta-edit-btn:hover {
+  background: var(--info-color);
+  color: white;
+}
+
+.consulta-delete-btn {
+  background: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.consulta-delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* Detalles expandidos de consulta */
+.consulta-details-expanded {
+  background: var(--hover-background);
+  padding: 1rem;
+}
+
+.consulta-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.consulta-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.consulta-detail-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.consulta-detail-value {
+  color: var(--text-color);
+}
+
+/* Loading y empty states específicos */
+.consultas-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.consultas-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.consultas-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .consultas-container {
+    padding: 1rem;
+  }
+  
+  .consultas-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .consulta-form {
+    grid-template-columns: 1fr;
+  }
+  
+  .consulta-form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .consultas-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .consultas-table-container {
+    overflow-x: auto;
+  }
+  
+  .consultas-table {
+    min-width: 1000px;
+  }
+  
+  .consultas-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .consultas-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .consulta-actions {
+    flex-direction: column;
+  }
+  
+  .consulta-details-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,408 @@
+/* ===== ESPECIALIDADES - DISEÑO MODERNO ===== */
+
+.especialidades-container {
+  padding: var(--spacing-8);
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.especialidades-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.especialidades-title {
+  color: var(--gray-900);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin: 0;
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.especialidades-search-section {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--spacing-4);
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+}
+
+.especialidades-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+.especialidades-stat-card {
+  background: var(--surface-card);
+  padding: var(--spacing-6);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--gray-200);
+  text-align: center;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.especialidades-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-secondary);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.especialidades-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-hover);
+}
+
+.especialidades-stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.especialidades-stat-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Grid view para especialidades */
+.especialidades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.especialidad-card {
+  background: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.especialidad-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary-color);
+}
+
+.especialidad-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.especialidad-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.especialidad-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.especialidad-card-id {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.especialidad-card-description {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.especialidad-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+/* Formulario de especialidad específico */
+.especialidad-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.especialidad-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.especialidad-nombre-input {
+  position: relative;
+}
+
+.especialidad-descripcion-textarea {
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.especialidad-char-counter {
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.especialidad-char-counter.warning {
+  color: var(--warning-color);
+}
+
+.especialidad-char-counter.error {
+  color: var(--danger-color);
+}
+
+/* Tabla de especialidades específica */
+.especialidades-table-container {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.especialidades-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.especialidades-table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.especialidades-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+.especialidades-table tbody tr:hover {
+  background: var(--hover-background);
+}
+
+.especialidad-nombre-cell {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.especialidad-descripcion-cell {
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.especialidad-id-cell {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+/* Acciones de especialidad */
+.especialidad-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.especialidad-action-btn {
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.especialidad-edit-btn {
+  background: var(--info-light);
+  color: var(--info-color);
+}
+
+.especialidad-edit-btn:hover {
+  background: var(--info-color);
+  color: white;
+}
+
+.especialidad-delete-btn {
+  background: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.especialidad-delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* View toggle */
+.especialidades-view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--card-background);
+  padding: 0.25rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.view-toggle-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-muted);
+}
+
+.view-toggle-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.view-toggle-btn:hover:not(.active) {
+  background: var(--hover-background);
+  color: var(--text-color);
+}
+
+/* Loading y empty states específicos */
+.especialidades-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.especialidades-empty {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.especialidades-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .especialidades-container {
+    padding: 1rem;
+  }
+  
+  .especialidades-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .especialidades-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .especialidades-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .especialidades-table-container {
+    overflow-x: auto;
+  }
+  
+  .especialidades-table {
+    min-width: 600px;
+  }
+  
+  .especialidad-card {
+    margin-bottom: 1rem;
+  }
+  
+  .especialidades-view-toggle {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .especialidades-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .especialidad-card-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .especialidad-card-actions {
+    justify-content: center;
+  }
+  
+  .view-toggle-btn {
+    flex: 1;
+    text-align: center;
+  }
+}

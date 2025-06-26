@@ -1,0 +1,380 @@
+/* ===== MEDICOS - DISEÑO MODERNO ===== */
+
+.medicos-page {
+  min-height: 100vh;
+  background: var(--gradient-hero);
+  position: relative;
+}
+
+.medicos-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface-50);
+  opacity: 0.95;
+  z-index: 0;
+}
+
+.medicos-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.medicos-container {
+  padding: var(--spacing-8);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ===== MEDICOS TABLE HEADER MODERNO ===== */
+.medicos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-8);
+  padding: var(--spacing-6);
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--gray-200);
+  backdrop-filter: blur(10px);
+}
+
+.medicos-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--gray-900);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.medicos-title i {
+  color: var(--accent-600);
+  background: var(--accent-100);
+  padding: var(--spacing-3);
+  border-radius: var(--radius-xl);
+  font-size: var(--text-xl);
+  box-shadow: var(--shadow-sm);
+  -webkit-text-fill-color: var(--accent-600);
+}
+
+.medicos-add-btn {
+  background: var(--gradient-accent);
+  color: var(--surface-50);
+  border: none;
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.medicos-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+}
+
+.medicos-add-btn i {
+  font-size: 1.1rem;
+}
+
+/* ===== MEDICOS SEARCH ===== */
+.medicos-search {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.medicos-search input {
+  width: 100%;
+  padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+  border: 2px solid var(--border-light);
+  border-radius: 16px;
+  font-size: 1.1rem;
+  background: white;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.medicos-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+  transform: translateY(-1px);
+}
+
+.medicos-search i {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+}
+
+.medicos-search input:focus + i {
+  color: var(--primary-color);
+}
+
+/* ===== MEDICOS TABLE CONTAINER ===== */
+.medicos-table-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.medicos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.medicos-table thead th {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  font-weight: 600;
+  padding: 1.5rem 1.25rem;
+  text-align: left;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.medicos-table thead th:first-child {
+  border-top-left-radius: 0;
+}
+
+.medicos-table thead th:last-child {
+  border-top-right-radius: 0;
+}
+
+.medicos-table tbody td {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+  vertical-align: middle;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.medicos-table tbody tr:hover td {
+  background-color: rgba(var(--primary-rgb), 0.02);
+  transform: translateY(-1px);
+}
+
+.medicos-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== MEDICOS SPECIALITY BADGE ===== */
+.medico-speciality {
+  background: linear-gradient(135deg, var(--info-color) 0%, #2980b9 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* ===== MEDICOS STATUS INDICATORS ===== */
+.medico-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.medico-status.active {
+  color: var(--success-color);
+}
+
+.medico-status.inactive {
+  color: var(--error-color);
+}
+
+.medico-status i {
+  font-size: 0.7rem;
+}
+
+/* ===== MEDICOS ACTIONS ===== */
+.medicos-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.medico-action-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.medico-action-btn.edit {
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--info-color);
+}
+
+.medico-action-btn.edit:hover {
+  background: var(--info-color);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.medico-action-btn.delete {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--error-color);
+}
+
+.medico-action-btn.delete:hover {
+  background: var(--error-color);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.medico-action-btn.view {
+  background: rgba(155, 89, 182, 0.1);
+  color: #9b59b6;
+}
+
+.medico-action-btn.view:hover {
+  background: #9b59b6;
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+}
+
+/* ===== MEDICOS MODAL SPECIFIC ===== */
+.medico-modal .modal-title {
+  color: var(--primary-color);
+}
+
+.medico-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.medico-form-full-width {
+  grid-column: 1 / -1;
+}
+
+.medico-license-input {
+  position: relative;
+}
+
+.medico-license-input::before {
+  content: '#';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-weight: 600;
+  z-index: 1;
+}
+
+.medico-license-input input {
+  padding-left: 2.5rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1200px) {
+  .medicos-container {
+    padding: 1.5rem;
+  }
+  
+  .medicos-table {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .medicos-container {
+    padding: 1rem;
+  }
+  
+  .medicos-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  
+  .medicos-title {
+    font-size: 1.5rem;
+  }
+  
+  .medicos-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .medico-form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .medicos-table {
+    font-size: 0.8rem;
+  }
+  
+  .medicos-table thead th,
+  .medicos-table tbody td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .medicos-actions {
+    gap: 0.5rem;
+  }
+  
+  .medico-action-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .medicos-search input {
+    padding: 1rem 1rem 1rem 3rem;
+    font-size: 1rem;
+  }
+  
+  .medicos-search i {
+    left: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .medicos-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
